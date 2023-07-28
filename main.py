@@ -25,12 +25,21 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 @socketio.on("message")
 def gerenciar_msg(mensagem):
     send(mensagem, broadcast=True)
+    usuario_msg(mensagem)
+
+from tinydb import TinyDB
+
+bd = TinyDB("Mensagens.json") 
+
+def usuario_msg(mensagem):
+    bd.insert({"MSG": mensagem})
 
 # criar a 1 pagina = 1 rota
 
 @app.route("/")
 def homepage():
     return render_template("index.html")
+
 
 # roda o nosso app
 socketio.run(app, host="192.168.15.110")
