@@ -30,17 +30,6 @@ messages = []
 def gerenciar_msg(mensagem):
     messages.append(mensagem)
     send(mensagem, broadcast=True)
-    usuario_msg(mensagem)
-    print(messages)
-    
-    
-
-from tinydb import TinyDB
-
-bd = TinyDB("Mensagens.json") 
-
-def usuario_msg(mensagem):
-    bd.insert({"MSG": mensagem})
 
 # criar a 1 pagina = 1 rota
 
