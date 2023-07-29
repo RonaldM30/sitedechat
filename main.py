@@ -24,11 +24,8 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 # funcionalidade de enviar msg
 
-messages = []
-
 @socketio.on("message")
 def gerenciar_msg(mensagem):
-    messages.append(mensagem)
     send(mensagem, broadcast=True)
 
 # criar a 1 pagina = 1 rota
