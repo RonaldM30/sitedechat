@@ -15,17 +15,25 @@
 
 # importe o flask
 from flask import Flask, render_template
-from flask_socketio import SocketIO, send
+from flask_socketio import SocketIO, send, emit
+import logging
 
 # crie o app
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # funcionalidade de enviar msg
+
+messages = []
+
 @socketio.on("message")
 def gerenciar_msg(mensagem):
+    messages.append(mensagem)
     send(mensagem, broadcast=True)
     usuario_msg(mensagem)
+    print(messages)
+    
+    
 
 from tinydb import TinyDB
 
@@ -42,6 +50,7 @@ def homepage():
 
 
 # roda o nosso app
-socketio.run(app, allow_unsafe_werkzeug=True)
+if __name__ == "__main__":
+    socketio.run(app)
 
 # websocket -> tunel
