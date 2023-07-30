@@ -24,9 +24,22 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 # funcionalidade de enviar msg
 
+messages = []
+
 @socketio.on("message")
 def gerenciar_msg(mensagem):
+    messages.append(mensagem)
     send(mensagem, broadcast=True)
+    usuario_msg(mensagem)
+    print(messages)
+    
+
+from tinydb import TinyDB
+
+bd = TinyDB("Mensagens.json") 
+
+def usuario_msg(mensagem):
+    bd.insert({"MSG": mensagem})
 
 # criar a 1 pagina = 1 rota
 
@@ -37,6 +50,6 @@ def homepage():
 
 # roda o nosso app
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    socketio.run(app, host="0.0.0.0", port=5000)
 
 # websocket -> tunel
